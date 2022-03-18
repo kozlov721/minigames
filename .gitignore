@@ -1,5 +1,4 @@
-/*
-!src/
-!.gitignore
-!CMakeLists.txt
-!Makefile
+CMakeCache.txt
+cmake_install.cmake
+CMakeFiles
+snake
