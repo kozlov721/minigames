@@ -57,10 +57,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/martin/Dropbox/CProjects/small/snake
+CMAKE_SOURCE_DIR = /home/martin/Dropbox/CProjects/minigames
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/martin/Dropbox/CProjects/small/snake
+CMAKE_BINARY_DIR = /home/martin/Dropbox/CProjects/minigames
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -87,9 +87,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/martin/Dropbox/CProjects/small/snake/CMakeFiles /home/martin/Dropbox/CProjects/small/snake//CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/martin/Dropbox/CProjects/minigames/CMakeFiles /home/martin/Dropbox/CProjects/minigames//CMakeFiles/progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/martin/Dropbox/CProjects/small/snake/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/martin/Dropbox/CProjects/minigames/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -166,6 +166,30 @@ main.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/snake.dir/build.make CMakeFiles/snake.dir/main.c.s
 .PHONY : main.c.s
 
+snake.o: snake.c.o
+.PHONY : snake.o
+
+# target to build an object file
+snake.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/snake.dir/build.make CMakeFiles/snake.dir/snake.c.o
+.PHONY : snake.c.o
+
+snake.i: snake.c.i
+.PHONY : snake.i
+
+# target to preprocess a source file
+snake.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/snake.dir/build.make CMakeFiles/snake.dir/snake.c.i
+.PHONY : snake.c.i
+
+snake.s: snake.c.s
+.PHONY : snake.s
+
+# target to generate assembly for a file
+snake.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/snake.dir/build.make CMakeFiles/snake.dir/snake.c.s
+.PHONY : snake.c.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -179,6 +203,9 @@ help:
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
+	@echo "... snake.o"
+	@echo "... snake.i"
+	@echo "... snake.s"
 .PHONY : help
 
 
