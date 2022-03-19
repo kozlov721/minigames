@@ -117,17 +117,17 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named snake
+# Target rules for targets named games
 
 # Build rule for target.
-snake: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 snake
-.PHONY : snake
+games: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 games
+.PHONY : games
 
 # fast build rule for target.
-snake/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/snake.dir/build.make CMakeFiles/snake.dir/build
-.PHONY : snake/fast
+games/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/games.dir/build.make CMakeFiles/games.dir/build
+.PHONY : games/fast
 
 #=============================================================================
 # Target rules for targets named run
@@ -147,7 +147,7 @@ src/main.o: src/main.c.o
 
 # target to build an object file
 src/main.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/snake.dir/build.make CMakeFiles/snake.dir/src/main.c.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/games.dir/build.make CMakeFiles/games.dir/src/main.c.o
 .PHONY : src/main.c.o
 
 src/main.i: src/main.c.i
@@ -155,7 +155,7 @@ src/main.i: src/main.c.i
 
 # target to preprocess a source file
 src/main.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/snake.dir/build.make CMakeFiles/snake.dir/src/main.c.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/games.dir/build.make CMakeFiles/games.dir/src/main.c.i
 .PHONY : src/main.c.i
 
 src/main.s: src/main.c.s
@@ -163,7 +163,7 @@ src/main.s: src/main.c.s
 
 # target to generate assembly for a file
 src/main.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/snake.dir/build.make CMakeFiles/snake.dir/src/main.c.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/games.dir/build.make CMakeFiles/games.dir/src/main.c.s
 .PHONY : src/main.c.s
 
 src/minesweeper.o: src/minesweeper.c.o
@@ -171,7 +171,7 @@ src/minesweeper.o: src/minesweeper.c.o
 
 # target to build an object file
 src/minesweeper.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/snake.dir/build.make CMakeFiles/snake.dir/src/minesweeper.c.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/games.dir/build.make CMakeFiles/games.dir/src/minesweeper.c.o
 .PHONY : src/minesweeper.c.o
 
 src/minesweeper.i: src/minesweeper.c.i
@@ -179,7 +179,7 @@ src/minesweeper.i: src/minesweeper.c.i
 
 # target to preprocess a source file
 src/minesweeper.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/snake.dir/build.make CMakeFiles/snake.dir/src/minesweeper.c.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/games.dir/build.make CMakeFiles/games.dir/src/minesweeper.c.i
 .PHONY : src/minesweeper.c.i
 
 src/minesweeper.s: src/minesweeper.c.s
@@ -187,7 +187,7 @@ src/minesweeper.s: src/minesweeper.c.s
 
 # target to generate assembly for a file
 src/minesweeper.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/snake.dir/build.make CMakeFiles/snake.dir/src/minesweeper.c.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/games.dir/build.make CMakeFiles/games.dir/src/minesweeper.c.s
 .PHONY : src/minesweeper.c.s
 
 src/snake.o: src/snake.c.o
@@ -195,7 +195,7 @@ src/snake.o: src/snake.c.o
 
 # target to build an object file
 src/snake.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/snake.dir/build.make CMakeFiles/snake.dir/src/snake.c.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/games.dir/build.make CMakeFiles/games.dir/src/snake.c.o
 .PHONY : src/snake.c.o
 
 src/snake.i: src/snake.c.i
@@ -203,7 +203,7 @@ src/snake.i: src/snake.c.i
 
 # target to preprocess a source file
 src/snake.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/snake.dir/build.make CMakeFiles/snake.dir/src/snake.c.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/games.dir/build.make CMakeFiles/games.dir/src/snake.c.i
 .PHONY : src/snake.c.i
 
 src/snake.s: src/snake.c.s
@@ -211,7 +211,7 @@ src/snake.s: src/snake.c.s
 
 # target to generate assembly for a file
 src/snake.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/snake.dir/build.make CMakeFiles/snake.dir/src/snake.c.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/games.dir/build.make CMakeFiles/games.dir/src/snake.c.s
 .PHONY : src/snake.c.s
 
 src/tui.o: src/tui.c.o
@@ -219,7 +219,7 @@ src/tui.o: src/tui.c.o
 
 # target to build an object file
 src/tui.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/snake.dir/build.make CMakeFiles/snake.dir/src/tui.c.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/games.dir/build.make CMakeFiles/games.dir/src/tui.c.o
 .PHONY : src/tui.c.o
 
 src/tui.i: src/tui.c.i
@@ -227,7 +227,7 @@ src/tui.i: src/tui.c.i
 
 # target to preprocess a source file
 src/tui.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/snake.dir/build.make CMakeFiles/snake.dir/src/tui.c.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/games.dir/build.make CMakeFiles/games.dir/src/tui.c.i
 .PHONY : src/tui.c.i
 
 src/tui.s: src/tui.c.s
@@ -235,7 +235,7 @@ src/tui.s: src/tui.c.s
 
 # target to generate assembly for a file
 src/tui.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/snake.dir/build.make CMakeFiles/snake.dir/src/tui.c.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/games.dir/build.make CMakeFiles/games.dir/src/tui.c.s
 .PHONY : src/tui.c.s
 
 # Help Target
@@ -247,7 +247,7 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... run"
-	@echo "... snake"
+	@echo "... games"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"

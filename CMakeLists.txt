@@ -5,7 +5,7 @@ project(minigames)
 set(CMAKE_C_STANDARD 99)
 
 set(SOURCES src/main.c src/snake.c src/minesweeper.c src/tui.c)
-set(EXECUTABLE snake)
+set(EXECUTABLE games)
 
 add_executable(${EXECUTABLE} ${SOURCES})
 
