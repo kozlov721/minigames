@@ -24,7 +24,6 @@ static inline bool check_bounds(int i, int j, int r, int c);
 static inline int get_number(int);
 
 static void show_cell(int cell);
-static void render(int r, int c, int x_o, int y_o, int board[r][c]);
 
 static int count_prop(int i, int j, int r, int c, int[r][c], bool (*f)(int));
 
@@ -33,9 +32,10 @@ static bool is_solved(int r, int c, int board[r][c]);
 
 static void reveal_mines(int r, int c, int board[r][c]);
 
-static void toggle_flag(int *cell);
-static int reveal_cell(int r, int c, int board[r][c], int i, int j);
-static void reveal_floodfill(int r, int c, int board[r][c], int i, int j);
+static int toggle_flag(int *cell);
+static int reveal(int r, int c, int board[r][c], int i, int j);
+static int reveal_one(int* cell);
+static void floodfill(int r, int c, int board[r][c], int i, int j);
 static bool is_solved(int r, int c, int board[r][c]);
 static void init_board(int r, int c, int board[r][c], int mines);
 
@@ -82,9 +82,9 @@ void postprocess(int rows, int cols, int board[rows][cols]) {
 
 void show_cell(int cell) {
     if (is_flag(cell))
-        printf("🚩");
+        printf("🏴");
     else if (!is_revealed(cell))
-        printf("⬛");
+        printf("⬜");
     else if (is_mine(cell))
         printf("💣");
     else if (get_number(cell) == 0)
@@ -93,38 +93,25 @@ void show_cell(int cell) {
         printf("%d ", get_number(cell));
 }
 
-void render(int rows, int cols, int x_o, int y_o, int board[rows][cols]) {
-    for (int i = 0; i < y_o; ++i)
-        printf("\n\r");
-    shift_cursor(x_o);
-    printf("╭");
-    for (int i = 0; i < cols * 2; ++i)
-        printf("─");
-    printf("╮\n\r");
-    for (int i = 0; i < rows; ++i) {
-        shift_cursor(x_o);
-        printf("│");
-        for (int j = 0; j < cols; ++j)
-            show_cell(board[i][j]);
-        printf("│\n\r");
-    }
-    shift_cursor(x_o);
-    printf("╰");
-    for (int i = 0; i < cols * 2; ++i)
-        printf("─");
-    printf("╯\n\r");
-}
-
-int reveal_single(int *cell) {
-    if (is_flag(*cell) || is_revealed(*cell))
-        return -1;
-    *cell &= ~M_HIDD;
-    if (is_mine(*cell))
-        return 1;
+int reveal(int rows, int cols, int board[rows][cols], int i, int j) {
+    int n = reveal_one(&board[i][j]);
+    if (n < 0)
+        return n;
+    if (n == 0)
+        floodfill(rows, cols, board, i, j);
     return 0;
 }
 
-void reveal_floodfill(int rows, int cols, int board[rows][cols], int i, int j) {
+int reveal_one(int *cell) {
+    if (is_flag(*cell) || is_revealed(*cell))
+        return -2;
+    *cell &= ~M_HIDD;
+    if (is_mine(*cell))
+        return -1;
+    return get_number(*cell);
+}
+
+void floodfill(int rows, int cols, int board[rows][cols], int i, int j) {
     if (!check_bounds(i, j, rows, cols))
         return;
     if (get_number(board[i][j]))
@@ -137,29 +124,21 @@ void reveal_floodfill(int rows, int cols, int board[rows][cols], int i, int j) {
             int n_j = j + dj;
             if (check_bounds(n_i, n_j, rows, cols) &&
                     is_hidden(board[n_i][n_j])) {
-                if (reveal_single(&board[n_i][n_j]) != 1)
-                    reveal_floodfill(rows, cols, board, n_i, n_j);
+                if (reveal_one(&board[n_i][n_j]) != -1)
+                    floodfill(rows, cols, board, n_i, n_j);
             }
         }
     }
 }
 
-int reveal_cell(int rows, int cols, int board[rows][cols], int i, int j) {
-    if (!check_bounds(i, j, rows, cols))
-        return -1;
-    int n = reveal_single(&board[i][j]);
-    if (n)
-        return n;
-    if (get_number(board[i][j]) == 0)
-        reveal_floodfill(rows, cols, board, i, j);
-    return 0;
-}
-
-void toggle_flag(int *cell) {
-    if (is_flag(*cell))
+int toggle_flag(int *cell) {
+    if (is_flag(*cell)) {
         *cell &= ~M_FLAG;
-    else
+        return -1;
+    } else {
         *cell |= M_FLAG;
+        return 1;
+    }
 }
 
 bool is_solved(int rows, int cols, int board[rows][cols]) {
@@ -190,7 +169,7 @@ void reveal_mines(int rows, int cols, int board[rows][cols]) {
     for (int i = 0; i < rows; ++i) {
         for (int j = 0; j < cols; ++j) {
             if (is_mine(board[i][j]))
-                reveal_cell(rows, cols, board, i, j);
+                reveal(rows, cols, board, i, j);
         }
     }
 }
@@ -201,44 +180,38 @@ void run_minesweeper(int rows, int cols, int mines) {
     mousemask(ALL_MOUSE_EVENTS | REPORT_MOUSE_POSITION, NULL);
     int ww, wh;
     getmaxyx(stdscr, wh, ww);
-    int x_offset = (ww - cols) / 2;
-    int y_offset = (wh - rows) / 2;
+    int x_shift = (ww - cols) / 2;
+    int y_shift = (wh - rows) / 2;
     MEVENT event;
-    bool lost = false;
-    while (!is_solved(rows, cols, board)) {
+    int ch = 0;
+    char str[15] = {0};
+    while (!is_solved(rows, cols, board) && ch != 'q') {
+        sprintf(str, " Mines: %-3d", mines >= 0 ? mines : 0);
         clear();
         refresh();
-        render(rows, cols, x_offset, y_offset, board);
-        switch (getch()) {
-        case 'q':
-            lost = true;
-            goto end;
-        case KEY_MOUSE:
-            if (getmouse(&event) == OK) {
-                int i = event.y - y_offset - 1;
-                int j = (event.x - x_offset - 1) / 2;
-                if (!check_bounds(i, j, rows, cols))
-                    break;
+        render(rows, cols, x_shift, y_shift, board, str, show_cell);
+        if ((ch = getch()) == KEY_MOUSE && getmouse(&event) == OK) {
+            int i = event.y - y_shift - 3;
+            int j = (event.x - x_shift - 1) / 2;
+            if (check_bounds(i, j, rows, cols)) {
                 if (event.bstate & BUTTON1_CLICKED) {
-                    if (reveal_cell(rows, cols, board, i, j) == 1) {
-                        lost = true;
+                    if (reveal(rows, cols, board, i, j) == -1) {
                         reveal_mines(rows, cols, board);
-                        goto end;
+                        break;
                     }
                 } else if (event.bstate & BUTTON3_CLICKED)
-                    toggle_flag(&board[i][j]);
+                    mines -= toggle_flag(&board[i][j]);
             }
-            break;
         }
-        usleep(100000);
     }
-end:
     clear();
     refresh();
-    render(rows, cols, x_offset, y_offset, board);
-    if (lost)
-        boxed_message(x_offset, "You've lost :(");
+    render(rows, cols, x_shift, y_shift, board, str, show_cell);
+    char *end_str;
+    if (!is_solved(rows, cols, board))
+        end_str = "You've lost :(";
     else
-        boxed_message(x_offset, "Congratulations, you've won!");
+        end_str = "Congratulations, you've won!";
+    boxed_message(center_str(x_shift, cols, end_str), end_str);
     getchar();
 }
