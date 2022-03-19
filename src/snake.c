@@ -104,8 +104,10 @@ int run_snake(int rows, int cols) {
     int size = 1;
 
     board[h_i][h_j] = BODY | M_RIGHT;
-    int f_j = rand() % cols;
     int f_i = rand() % rows;
+    int f_j = rand() % cols;
+    if (f_i == h_i && f_j == h_j)
+        --f_i;
     int x_shift;
     int y_shift;
     board[f_i][f_j] = (board[f_i][f_j] & ~M_TYPE) | FOOD;
@@ -161,8 +163,10 @@ int run_snake(int rows, int cols) {
         if (is_food(board[h_i][h_j])) {
             ++size;
             delay -= 300;
-            f_j = rand() % cols;
             f_i = rand() % rows;
+            f_j = rand() % cols;
+            if (f_i == h_i && f_j == h_j)
+                f_i = modulo(f_i - 1, rows);
             board[f_i][f_j] = (board[f_i][f_j] & ~M_TYPE) | FOOD;
         } else {
             int prev_tail = board[t_i][t_j];
@@ -180,11 +184,11 @@ int run_snake(int rows, int cols) {
         if (is_body(board[h_i][h_j]))
             break;
         board[h_i][h_j] = old_h & 0x0ff;
-        render(cols, rows, x_shift, y_shift, board, str, show_cell);
+        render(rows, cols, x_shift, y_shift, board, str, show_cell);
         usleep(delay);
     }
 end:
-    render(cols, rows, x_shift, y_shift, board, str, show_cell);
+    render(rows, cols, x_shift, y_shift, board, str, show_cell);
     char end_str[30] = {0};
     sprintf(end_str, "Game over, score: %d", size);
     boxed_message(center_str(x_shift, cols, end_str), end_str);
