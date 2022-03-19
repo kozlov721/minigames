@@ -175,13 +175,11 @@ void reveal_mines(int rows, int cols, int board[rows][cols]) {
 }
 
 void run_minesweeper(int rows, int cols, int mines) {
-    int(*board)[rows] = malloc(rows * cols * sizeof(int));
+    int(*board)[cols] = malloc(rows * cols * sizeof(int));
     init_board(rows, cols, board, mines);
     mousemask(ALL_MOUSE_EVENTS | REPORT_MOUSE_POSITION, NULL);
-    int ww, wh;
-    getmaxyx(stdscr, wh, ww);
-    int x_shift = (ww - cols) / 2;
-    int y_shift = (wh - rows) / 2;
+    int x_shift = (getmaxx(stdscr) - cols) / 2;
+    int y_shift = (getmaxy(stdscr) - rows) / 2;
     MEVENT event;
     int ch = 0;
     char str[15] = {0};
