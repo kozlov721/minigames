@@ -3,9 +3,10 @@
 #include <stdlib.h>
 
 #include "snake.h"
+#include "minesweeper.h"
 
-#define WIDTH  25
-#define HEIGHT 25
+#define WIDTH  20
+#define HEIGHT 20
 
 void quit(int sig) {
     endwin();
@@ -19,11 +20,15 @@ void init_screen() {
     cbreak();
     noecho();
     nodelay(stdscr, TRUE);
+    /* nodelay(stdscr, FALSE); */
+    clearok(stdscr, TRUE);
     keypad(stdscr, TRUE);
+    curs_set(0);
 }
 
 int main() {
     init_screen();
+    /* run_minesweeper(WIDTH, HEIGHT, 5); */
     run_snake(WIDTH, HEIGHT);
     endwin();
 }

@@ -166,6 +166,30 @@ src/main.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/snake.dir/build.make CMakeFiles/snake.dir/src/main.c.s
 .PHONY : src/main.c.s
 
+src/minesweeper.o: src/minesweeper.c.o
+.PHONY : src/minesweeper.o
+
+# target to build an object file
+src/minesweeper.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/snake.dir/build.make CMakeFiles/snake.dir/src/minesweeper.c.o
+.PHONY : src/minesweeper.c.o
+
+src/minesweeper.i: src/minesweeper.c.i
+.PHONY : src/minesweeper.i
+
+# target to preprocess a source file
+src/minesweeper.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/snake.dir/build.make CMakeFiles/snake.dir/src/minesweeper.c.i
+.PHONY : src/minesweeper.c.i
+
+src/minesweeper.s: src/minesweeper.c.s
+.PHONY : src/minesweeper.s
+
+# target to generate assembly for a file
+src/minesweeper.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/snake.dir/build.make CMakeFiles/snake.dir/src/minesweeper.c.s
+.PHONY : src/minesweeper.c.s
+
 src/snake.o: src/snake.c.o
 .PHONY : src/snake.o
 
@@ -190,6 +214,30 @@ src/snake.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/snake.dir/build.make CMakeFiles/snake.dir/src/snake.c.s
 .PHONY : src/snake.c.s
 
+src/tui.o: src/tui.c.o
+.PHONY : src/tui.o
+
+# target to build an object file
+src/tui.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/snake.dir/build.make CMakeFiles/snake.dir/src/tui.c.o
+.PHONY : src/tui.c.o
+
+src/tui.i: src/tui.c.i
+.PHONY : src/tui.i
+
+# target to preprocess a source file
+src/tui.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/snake.dir/build.make CMakeFiles/snake.dir/src/tui.c.i
+.PHONY : src/tui.c.i
+
+src/tui.s: src/tui.c.s
+.PHONY : src/tui.s
+
+# target to generate assembly for a file
+src/tui.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/snake.dir/build.make CMakeFiles/snake.dir/src/tui.c.s
+.PHONY : src/tui.c.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -203,9 +251,15 @@ help:
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
+	@echo "... src/minesweeper.o"
+	@echo "... src/minesweeper.i"
+	@echo "... src/minesweeper.s"
 	@echo "... src/snake.o"
 	@echo "... src/snake.i"
 	@echo "... src/snake.s"
+	@echo "... src/tui.o"
+	@echo "... src/tui.i"
+	@echo "... src/tui.s"
 .PHONY : help
 
 
