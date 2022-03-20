@@ -15,7 +15,6 @@
 #define M_FLAG 0x0200
 #define M_HIDD 0x0400
 
-
 static inline bool is_flag(int);
 static inline bool is_mine(int);
 static inline bool is_hidden(int);
@@ -24,17 +23,11 @@ static inline bool check_bounds(int i, int j, int r, int c);
 static inline int get_number(int);
 
 static void show_cell(int cell);
-
-static int count_prop(int i, int j, int r, int c, int[r][c], bool (*f)(int));
-
-static void postprocess(int r, int c, int board[r][c]);
-static bool is_solved(int r, int c, int board[r][c]);
-
+static void count_mines(int r, int c, int board[r][c]);
 static void reveal_mines(int r, int c, int board[r][c]);
-
 static int toggle_flag(int *cell);
 static int reveal(int r, int c, int board[r][c], int i, int j);
-static int reveal_one(int* cell);
+static int reveal_one(int *cell);
 static void floodfill(int r, int c, int board[r][c], int i, int j);
 static bool is_solved(int r, int c, int board[r][c]);
 static void init_board(int r, int c, int board[r][c], int mines);
@@ -60,23 +53,23 @@ bool check_bounds(int i, int j, int r, int c) {
     return i >= 0 && i < (int) r && j >= 0 && j < (int) c;
 }
 
-int count_prop(int i, int j, int r, int c, int board[r][c], bool (*f)(int)) {
+int count_mines_around(int i, int j, int r, int c, int board[r][c]) {
     int count = 0;
     for (int di = -1; di <= 1; ++di) {
         for (int dj = -1; dj <= 1; ++dj) {
             if (di == 0 && dj == 0)
                 continue;
             if (check_bounds(i + di, j + dj, r, c))
-                count += f(board[i + di][j + dj]);
+                count += is_mine(board[i + di][j + dj]);
         }
     }
     return count;
 }
 
-void postprocess(int rows, int cols, int board[rows][cols]) {
+void count_mines(int rows, int cols, int board[rows][cols]) {
     for (int i = 0; i < rows; ++i) {
         for (int j = 0; j < cols; ++j)
-            board[i][j] |= count_prop(i, j, rows, cols, board, is_mine);
+            board[i][j] |= count_mines_around(i, j, rows, cols, board);
     }
 }
 
@@ -162,7 +155,7 @@ void init_board(int rows, int cols, int board[rows][cols], int mines) {
             --mines;
         }
     }
-    postprocess(rows, cols, board);
+    count_mines(rows, cols, board);
 }
 
 void reveal_mines(int rows, int cols, int board[rows][cols]) {
@@ -183,7 +176,7 @@ void run_minesweeper(int rows, int cols, int mines) {
     int y_shift = (getmaxy(stdscr) - rows) / 2;
     MEVENT event;
     int ch = 0;
-    char str[15] = {0};
+    char str[15] = { 0 };
     while (!is_solved(rows, cols, board) && ch != 'q') {
         sprintf(str, " Mines: %-3d", mines >= 0 ? mines : 0);
         clear();
