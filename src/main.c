@@ -23,6 +23,7 @@ void quit(int sig) {
 void init_screen() {
     signal(SIGINT, quit);
     signal(SIGSEGV, quit);
+    signal(SIGTERM, quit);
     initscr();
     cbreak();
     noecho();
@@ -32,17 +33,15 @@ void init_screen() {
     curs_set(0);
 }
 
-void render_options(int selected) {
+void render_options(int selected, char *title, int n, char* options[n]) {
     int cols = getmaxx(stdscr);
     int rows = getmaxy(stdscr);
     move(rows / 4, 0);
     wrefresh(stdscr);
-    char *title = "Which game do you wanna play?";
-    char *options[] = {"Minesweeper", "   Snake   "};
     char *chars[] = {"╭", "─", "╮", "│", "╰", "╯"};
     char *sel_chars[] = {"╔", "═", "╗", "║", "╚", "╝"};
     custom_boxed_message((cols - strlen(title)) / 2, title, chars);
-    for (int i = 0; i < 2; ++i)
+    for (int i = 0; i < n; ++i)
         custom_boxed_message((cols - strlen(options[i])) / 2,
                 options[i], i == selected ? sel_chars : chars);
 
@@ -52,30 +51,54 @@ int modulo(int x, int n) {
     return (x % n + n) % n;
 }
 
-int show_options() {
-    int n = 2;
-    int selected = 0;
+void show_options(int *game, int *rows, int *cols) {
+    char *games[] = {"Minesweeper", "   Snake   "};
+    int sizes_values[] = {14, 22, 36};
+    char *sizes[] = {"  14x14  ", "  22x22  ", "  36x36  "};
+    int selected_size = 0;
+    bool game_selected = false;
     while (true) {
         clear();
-        render_options(selected);
+        if (!game_selected)
+            render_options(*game, "Which game do you wanna play?", 2, games);
+        else
+            render_options(selected_size, "Select the size of the game", 3, sizes);
         switch(getch()) {
         case KEY_DOWN:
         case 'j':
         case 's':
-            selected = modulo(selected - 1, n);
+            if (!game_selected)
+                *game = modulo(*game + 1, 2);
+            else
+                selected_size = modulo(selected_size + 1, 3);
             break;
         case KEY_UP:
         case 'k':
         case 'w':
-            selected = modulo(selected + 1, n);
+            if (!game_selected)
+                *game = modulo(*game - 1, 2);
+            else
+                selected_size = modulo(selected_size - 1, 3);
             break;
         case KEY_RIGHT:
         case 'l':
         case 'd':
         case '\n':
-            return selected;
+            if (!game_selected)
+                game_selected = true;
+            else {
+                *rows = sizes_values[selected_size];
+                *cols = sizes_values[selected_size];
+                return;
+            }
+            break;
+        case KEY_LEFT:
+        case 'h':
+        case 'a':
         case 'q':
-            quit(0);
+            if (!game_selected)
+                quit(0);
+            game_selected = false;
         }
         usleep(10000);
     }
@@ -84,7 +107,8 @@ int show_options() {
 int main() {
     srand(time(NULL));
     init_screen();
-    int game = show_options();
+    int game, rows, cols;
+    show_options(&game, &rows, &cols);
 
     clear();
     refresh();
@@ -94,8 +118,8 @@ int main() {
         nodelay(stdscr, TRUE);
 
     if (game == SNAKE)
-        run_snake(ROWS, COLS);
+        run_snake(rows, cols);
     else
-        run_minesweeper(ROWS, COLS, ROWS * COLS / 15);
+        run_minesweeper(rows, cols, rows * cols / 6);
     endwin();
 }
