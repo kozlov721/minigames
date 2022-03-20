@@ -4,6 +4,6 @@
 #ifndef MINESWEEPER_H
 #define MINESWEEPER_H
 
-void run_minesweeper(int width, int height, int mines);
+void run_minesweeper(int rows, int cols, int mines);
 
 #endif /* MINESWEEPER_H */

@@ -1,13 +1,13 @@
-#include <curses.h>
-#include <signal.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <time.h>
-#include <string.h>
-
 #include "snake.h"
 #include "tui.h"
 #include "minesweeper.h"
+
+#include <curses.h>
+#include <signal.h>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
+#include <unistd.h>
 
 #define ROWS 16
 #define COLS 16
@@ -33,18 +33,18 @@ void init_screen() {
     curs_set(0);
 }
 
-void render_options(int selected, char *title, int n, char* options[n]) {
+void render_options(int selected, char *title, int n, char *options[n]) {
     int cols = getmaxx(stdscr);
     int rows = getmaxy(stdscr);
     move(rows / 4, 0);
     wrefresh(stdscr);
-    char *chars[] = {"╭", "─", "╮", "│", "╰", "╯"};
-    char *sel_chars[] = {"╔", "═", "╗", "║", "╚", "╝"};
+    char *chars[] = { "╭", "─", "╮", "│", "╰", "╯" };
+    char *sel_chars[] = { "╔", "═", "╗", "║", "╚", "╝" };
     custom_boxed_message((cols - strlen(title)) / 2, title, chars);
     for (int i = 0; i < n; ++i)
         custom_boxed_message((cols - strlen(options[i])) / 2,
-                options[i], i == selected ? sel_chars : chars);
-
+                options[i],
+                i == selected ? sel_chars : chars);
 }
 
 int modulo(int x, int n) {
@@ -52,8 +52,8 @@ int modulo(int x, int n) {
 }
 
 void show_options(int *game, int *rows, int *cols) {
-    char *games[] = {"Minesweeper", "   Snake   "};
-    char *sizes[] = {"  15x15  ", "  21x21  ", "  30x16  "};
+    char *games[] = { "Minesweeper", "   Snake   " };
+    char *sizes[] = { "  15x15  ", "  21x21  ", "  30x16  " };
     int selected_size = 0;
     bool game_selected = false;
     while (true) {
@@ -61,8 +61,9 @@ void show_options(int *game, int *rows, int *cols) {
         if (!game_selected)
             render_options(*game, "Which game do you wanna play?", 2, games);
         else
-            render_options(selected_size, "Select the size of the game", 3, sizes);
-        switch(getch()) {
+            render_options(
+                    selected_size, "Select the size of the game", 3, sizes);
+        switch (getch()) {
         case KEY_DOWN:
         case 'j':
         case 's':

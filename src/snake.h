@@ -1,6 +1,6 @@
 #ifndef SNAKE_H
 #define SNAKE_H
 
-void run_snake(int width, int height);
+void run_snake(int rows, int cols);
 
-#endif
+#endif /* SNAKE_H */
