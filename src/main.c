@@ -53,8 +53,7 @@ int modulo(int x, int n) {
 
 void show_options(int *game, int *rows, int *cols) {
     char *games[] = {"Minesweeper", "   Snake   "};
-    int sizes_values[] = {14, 22, 36};
-    char *sizes[] = {"  14x14  ", "  22x22  ", "  36x36  "};
+    char *sizes[] = {"  15x15  ", "  21x21  ", "  30x16  "};
     int selected_size = 0;
     bool game_selected = false;
     while (true) {
@@ -87,8 +86,7 @@ void show_options(int *game, int *rows, int *cols) {
             if (!game_selected)
                 game_selected = true;
             else {
-                *rows = sizes_values[selected_size];
-                *cols = sizes_values[selected_size];
+                sscanf(sizes[selected_size], "  %dx%d  ", cols, rows);
                 return;
             }
             break;
