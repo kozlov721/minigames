@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <curses.h>
 
 void shift_cursor(int n) {
     for (int i = 0; i < n; ++i)
@@ -11,6 +12,11 @@ void shift_cursor(int n) {
 void boxed_message(int x_shift, char *message) {
     char *chars[] = {"╭", "─", "╮", "│", "╰", "╯"};
     custom_boxed_message(x_shift, message, chars);
+}
+
+void get_xy_shift(int rows, int cols, int *x_shift, int *y_shift) {
+    *x_shift = (getmaxx(stdscr) - cols * 2) / 2;
+    *y_shift = (getmaxy(stdscr) - rows - 4) / 2;
 }
 
 void custom_boxed_message(int x_shift, char *message, char *chars[]) {

@@ -108,15 +108,13 @@ int run_snake(int rows, int cols) {
     int f_j = rand() % cols;
     if (f_i == h_i && f_j == h_j)
         --f_i;
-    int x_shift;
-    int y_shift;
+    int x_shift, y_shift;
     board[f_i][f_j] = (board[f_i][f_j] & ~M_TYPE) | FOOD;
     char str[15] = {0};
     while (true) {
         clear();
         sprintf(str, " Score: %-3d", size);
-        x_shift = (getmaxx(stdscr) - cols * 2) / 2;
-        y_shift = (getmaxy(stdscr) - rows) / 2;
+        get_xy_shift(rows, cols, &x_shift, &y_shift);
         int prev_dir = get_dir(board[h_i][h_j]) << 4;
         switch (getch()) {
         case 'w':

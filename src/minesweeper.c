@@ -77,7 +77,7 @@ void show_cell(int cell) {
     if (is_flag(cell))
         printf("🏴");
     else if (!is_revealed(cell))
-        printf("⬜");
+        printf("🟫");
     else if (is_mine(cell))
         printf("💣");
     else if (get_number(cell) == 0)
@@ -171,9 +171,8 @@ void run_minesweeper(int rows, int cols, int mines) {
     int(*board)[cols] = malloc(rows * cols * sizeof(int));
     init_board(rows, cols, board, mines);
     mousemask(ALL_MOUSE_EVENTS | REPORT_MOUSE_POSITION, NULL);
-    /* exit(getmaxx(stdscr)); */
-    int x_shift = (getmaxx(stdscr) - cols * 2) / 2;
-    int y_shift = (getmaxy(stdscr) - rows) / 2;
+    int x_shift, y_shift;
+    get_xy_shift(rows, cols, &x_shift, &y_shift);
     MEVENT event;
     int ch = 0;
     char str[15] = { 0 };
