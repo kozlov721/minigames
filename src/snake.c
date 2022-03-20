@@ -115,7 +115,7 @@ int run_snake(int rows, int cols) {
     while (true) {
         clear();
         sprintf(str, " Score: %-3d", size);
-        x_shift = (getmaxx(stdscr) - cols) / 2;
+        x_shift = (getmaxx(stdscr) - cols * 2) / 2;
         y_shift = (getmaxy(stdscr) - rows) / 2;
         int prev_dir = get_dir(board[h_i][h_j]) << 4;
         switch (getch()) {

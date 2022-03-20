@@ -178,7 +178,8 @@ void run_minesweeper(int rows, int cols, int mines) {
     int(*board)[cols] = malloc(rows * cols * sizeof(int));
     init_board(rows, cols, board, mines);
     mousemask(ALL_MOUSE_EVENTS | REPORT_MOUSE_POSITION, NULL);
-    int x_shift = (getmaxx(stdscr) - cols) / 2;
+    /* exit(getmaxx(stdscr)); */
+    int x_shift = (getmaxx(stdscr) - cols * 2) / 2;
     int y_shift = (getmaxy(stdscr) - rows) / 2;
     MEVENT event;
     int ch = 0;
