@@ -37,7 +37,7 @@ void custom_boxed_message(int x_shift, char *message, char *chars[]) {
 }
 
 int center_str(int x_shift, int cols, char *str) {
-    return x_shift + cols - strlen(str) / 2 - 2;
+    return x_shift + cols - strlen(str) / 2 - 1;
 }
 
 void render_board(int rows,
