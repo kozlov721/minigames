@@ -1,7 +1,10 @@
 #ifndef TUI_H
 #define TUI_H
 
+#include <wchar.h>
+
 void shift_cursor(int);
+void custom_boxed_message(int x_shift, char *str, char *chars[]);
 void boxed_message(int x_shift, char *str);
 int center_str(int x_shift, int cols, char *str);
 void render_board(int rows,

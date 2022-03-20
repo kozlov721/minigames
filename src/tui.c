@@ -9,19 +9,25 @@ void shift_cursor(int n) {
 }
 
 void boxed_message(int x_shift, char *message) {
+    char *chars[] = {"╭", "─", "╮", "│", "╰", "╯"};
+    custom_boxed_message(x_shift, message, chars);
+}
+
+void custom_boxed_message(int x_shift, char *message, char *chars[]) {
     shift_cursor(x_shift);
-    printf("╭");
+
+    printf("%s", chars[0]);
     for (size_t i = 0; i < strlen(message) + 4; ++i)
-        printf("─");
-    printf("╮\n\r");
+        printf("%s", chars[1]);
+    printf("%s\n\r", chars[2]);
     shift_cursor(x_shift);
-    printf("│  %s  │\n\r", message);
+    printf("%s  %s  %s\n\r", chars[3], message, chars[3]);
 
     shift_cursor(x_shift);
-    printf("╰");
+    printf("%s", chars[4]);
     for (size_t i = 0; i < strlen(message) + 4; ++i)
-        printf("─");
-    printf("╯\n\r");
+        printf("%s", chars[1]);
+    printf("%s\n\r", chars[5]);
 }
 
 int center_str(int x_shift, int cols, char *str) {
@@ -59,7 +65,6 @@ void render(int rows,
     for (int i = 0; i < y_o; ++i)
         printf("\n\r");
 
-    /* sprintf(str, " Mines: %-3d", mines >= 0 ? mines : 0); */
     int score_x_shift = center_str(x_o, cols, str);
     shift_cursor(score_x_shift);
     printf("╭");
