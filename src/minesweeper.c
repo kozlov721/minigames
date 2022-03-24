@@ -25,10 +25,10 @@ static inline int get_number(int);
 static void show_cell(int cell);
 static void count_mines(int r, int c, int board[r][c]);
 static void reveal_mines(int r, int c, int board[r][c]);
-static int toggle_flag(int *cell);
-static int reveal(int r, int c, int board[r][c], int i, int j);
+static int toggle_flag(int *cell, int *mines);
+static int reveal(int r, int c, int board[r][c], int i, int j, int *mines);
 static int reveal_one(int *cell);
-static void floodfill(int r, int c, int board[r][c], int i, int j);
+static void floodfill(int r, int c, int board[r][c], int i, int j, int *mines);
 static bool is_solved(int r, int c, int board[r][c]);
 static void init_board(int r, int c, int board[r][c], int mines);
 
@@ -86,12 +86,12 @@ void show_cell(int cell) {
         printf("%d ", get_number(cell));
 }
 
-int reveal(int rows, int cols, int board[rows][cols], int i, int j) {
+int reveal(int rows, int cols, int board[rows][cols], int i, int j, int *mines) {
     int n = reveal_one(&board[i][j]);
     if (n < 0)
         return n;
     if (n == 0)
-        floodfill(rows, cols, board, i, j);
+        floodfill(rows, cols, board, i, j, mines);
     return 0;
 }
 
@@ -104,7 +104,7 @@ int reveal_one(int *cell) {
     return get_number(*cell);
 }
 
-void floodfill(int rows, int cols, int board[rows][cols], int i, int j) {
+void floodfill(int rows, int cols, int board[rows][cols], int i, int j, int *mines) {
     if (!check_bounds(i, j, rows, cols))
         return;
     if (get_number(board[i][j]))
@@ -117,19 +117,23 @@ void floodfill(int rows, int cols, int board[rows][cols], int i, int j) {
             int n_j = j + dj;
             if (check_bounds(n_i, n_j, rows, cols) &&
                     is_hidden(board[n_i][n_j])) {
+                if (is_flag(board[n_i][n_j]))
+                    toggle_flag(&board[n_i][n_j], mines);
                 if (reveal_one(&board[n_i][n_j]) != -1)
-                    floodfill(rows, cols, board, n_i, n_j);
+                    floodfill(rows, cols, board, n_i, n_j, mines);
             }
         }
     }
 }
 
-int toggle_flag(int *cell) {
+int toggle_flag(int *cell, int *mines) {
     if (is_flag(*cell)) {
         *cell &= ~M_FLAG;
+        (*mines)++;
         return -1;
     } else {
         *cell |= M_FLAG;
+        (*mines)--;
         return 1;
     }
 }
@@ -162,7 +166,7 @@ void reveal_mines(int rows, int cols, int board[rows][cols]) {
     for (int i = 0; i < rows; ++i) {
         for (int j = 0; j < cols; ++j) {
             if (is_mine(board[i][j]))
-                reveal(rows, cols, board, i, j);
+                reveal(rows, cols, board, i, j, NULL);
         }
     }
 }
@@ -186,12 +190,12 @@ void run_minesweeper(int rows, int cols, int mines) {
             int j = (event.x - x_shift - 1) / 2;
             if (check_bounds(i, j, rows, cols)) {
                 if (event.bstate & BUTTON1_CLICKED) {
-                    if (reveal(rows, cols, board, i, j) == -1) {
+                    if (reveal(rows, cols, board, i, j, &mines) == -1) {
                         reveal_mines(rows, cols, board);
                         break;
                     }
                 } else if (event.bstate & BUTTON3_CLICKED)
-                    mines -= toggle_flag(&board[i][j]);
+                    toggle_flag(&board[i][j], &mines);
             }
         }
     }
