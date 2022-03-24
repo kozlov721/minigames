@@ -1,5 +1,4 @@
 #include "tui.h"
-
 #include <curses.h>
 #include <signal.h>
 #include <stdbool.h>

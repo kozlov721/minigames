@@ -9,9 +9,6 @@
 #include <time.h>
 #include <unistd.h>
 
-#define ROWS 16
-#define COLS 16
-
 #define MINESWEEPER 0
 #define SNAKE 1
 
