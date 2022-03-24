@@ -75,11 +75,11 @@ void count_mines(int rows, int cols, int board[rows][cols]) {
 
 void show_cell(int cell) {
     if (is_flag(cell))
-        printf("🏴");
+        printf(CYAN"🏴"RESET);
     else if (!is_revealed(cell))
         printf("🟫");
     else if (is_mine(cell))
-        printf("💣");
+        printf(RED"💣"RESET);
     else if (get_number(cell) == 0)
         printf("  ");
     else
