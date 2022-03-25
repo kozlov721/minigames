@@ -5,7 +5,7 @@ project(minigames)
 set(CMAKE_C_STANDARD 99)
 
 set(SOURCES src/main.c src/snake.c src/minesweeper.c src/tui.c)
-set(EXECUTABLE games)
+set(EXECUTABLE terminigames)
 
 add_executable(${EXECUTABLE} ${SOURCES})
 
@@ -14,6 +14,8 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c99 -Wall -Wextra -Werror -pedantic -ln
 if (MINGW)
     target_compile_definitions(${EXECUTABLE} PRIVATE __USE_MINGW_ANSI_STDIO=1)
 endif ()
+
+install(TARGETS ${EXECUTABLE} DESTINATION bin)
 
 add_custom_target(run
     COMMAND "./${EXECUTABLE}"
