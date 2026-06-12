@@ -179,9 +179,9 @@ void run_minesweeper(int rows, int cols, int mines) {
     get_xy_shift(rows, cols, &x_shift, &y_shift);
     MEVENT event;
     int ch = 0;
-    char str[15] = { 0 };
+    char str[20] = { 0 };
     while (!is_solved(rows, cols, board) && ch != 'q') {
-        sprintf(str, " Mines: %-3d", mines >= 0 ? mines : 0);
+        snprintf(str, sizeof(str), " Mines: %-3d", mines >= 0 ? mines : 0);
         clear();
         refresh();
         render(rows, cols, x_shift, y_shift, board, str, show_cell);
